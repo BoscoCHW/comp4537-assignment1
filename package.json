@@ -1,0 +1,26 @@
+{
+  "name": "assignment-1---the-pokemon-s-api-server-boscochw",
+  "version": "1.0.0",
+  "description": "[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=9961517&assignment_repo_type=AssignmentRepo)\r # Assignment 1 - Pokémon API\r Build a Restful API to serve Pokémons data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comp4537-w23/assignment-1---the-pokemon-s-api-server-BoscoCHW.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/comp4537-w23/assignment-1---the-pokemon-s-api-server-BoscoCHW/issues"
+  },
+  "homepage": "https://github.com/comp4537-w23/assignment-1---the-pokemon-s-api-server-BoscoCHW#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.9.0"
+  }
+}
