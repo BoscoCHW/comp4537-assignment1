@@ -10,6 +10,8 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use("/api/v1", router);
 
+app.use("/*", (req, res) => res.status(404).json({ msg: "Improper route. Check API docs plz." }));
+
 app.listen(port, async () => {
   try {
     await mongoose.connect(
