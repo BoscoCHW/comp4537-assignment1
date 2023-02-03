@@ -46,5 +46,5 @@ const pokemonSchema = new mongoose.Schema({
 });
 
 const Pokemon = mongoose.model("pokemons", pokemonSchema);
-
+Pokemon.createIndexes();
 module.exports = Pokemon;
