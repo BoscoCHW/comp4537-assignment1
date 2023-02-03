@@ -24,15 +24,14 @@ app.listen(port, async () => {
       { useNewUrlParser: true }
     );
     mongoose.connection.db.dropDatabase();
+    const { data: pokemons } = await axios.get(`${API_ENDPOINT}/pokedex.json`);
+    pokemons.forEach(async (pokemon) => {
+      const newPoke = new Pokemon(pokemon);
+      await newPoke.save();
+    });
   } catch (err) {
     console.log(err);
   }
-
-  const { data: pokemons } = await axios.get(`${API_ENDPOINT}/pokedex.json`);
-  pokemons.forEach(async (pokemon) => {
-    const newPoke = new Pokemon(pokemon);
-    await newPoke.save();
-  });
 
   console.log("Server is running on port " + port);
 });
