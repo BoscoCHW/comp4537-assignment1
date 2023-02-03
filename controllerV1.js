@@ -81,7 +81,7 @@ router.put("/pokemon/:id", async (req, res) => {
       pokemon.type = type;
       pokemon.base = base;
       const updatedPokemon = await pokemon.save();
-      res.json(updatedPokemon);
+      res.json({ msg: "Updated Successfully", pokeInfo: updatedPokemon });
     } else {
       res.status(404).json({ errMsg: "Pokemon not found" });
     }
@@ -102,7 +102,7 @@ router.patch("/pokemon/:id", async (req, res) => {
     } else {
       res
         .status(200)
-        .json({ msg: "updated successfully", pokeInfo: updatedUnicorn });
+        .json({ msg: "Updated Successfully", pokeInfo: updatedUnicorn });
     }
   } catch (err) {
     res.status(400).send({ errMsg: err.message });
