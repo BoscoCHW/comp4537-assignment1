@@ -16,7 +16,7 @@ const pokemonSchema = new mongoose.Schema({
   name: {
     type: {},
     validate: {
-      validator: (name) => name.english.length <= 20,
+      validator: (name) => name.english?.length <= 20,
       message: "English Name must be less than 21 characters.",
     },
   },
@@ -27,7 +27,23 @@ const pokemonSchema = new mongoose.Schema({
       message: "Unkown type. Check API docs for valid types.",
     },
   },
-  base: {},
+  base: {
+    type: Map,
+    of: Number,
+    validate: {
+      validator: (base) => {
+        return (
+          base.HP >= 0 &&
+          base.Attack >= 0 &&
+          base.Defense >= 0 &&
+          base["Sp. Attack"] >= 0 &&
+          base["Sp. Defense"] >= 0 &&
+          base.Speed >= 0
+        );
+      },
+      message: "Base stats must be greater than or equal to 0.",
+    },
+  },
 });
 
 const Pokemon = mongoose.model("pokemons", pokemonSchema);
