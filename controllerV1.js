@@ -99,10 +99,11 @@ router.patch("/pokemon/:id", async (req, res) => {
     }).exec();
     if (!updatedUnicorn) {
       res.status(404).json({ errMsg: "Pokemon not found" });
+    } else {
+      res
+        .status(200)
+        .json({ msg: "updated successfully", pokeInfo: updatedUnicorn });
     }
-    res
-      .status(200)
-      .json({ msg: "updated successfully", pokeInfo: updatedUnicorn });
   } catch (err) {
     res.status(400).send({ errMsg: err.message });
   }

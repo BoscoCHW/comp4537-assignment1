@@ -28,8 +28,7 @@ const pokemonSchema = new mongoose.Schema({
     },
   },
   base: {
-    type: Map,
-    of: Number,
+    type: {},
     validate: {
       validator: (base) => {
         return (
@@ -41,7 +40,7 @@ const pokemonSchema = new mongoose.Schema({
           base.Speed >= 0
         );
       },
-      message: "Base stats must be greater than or equal to 0.",
+      message: "Base stats validation error.",
     },
   },
 });
