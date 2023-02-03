@@ -3,7 +3,7 @@ const axios = require("axios");
 const mongoose = require("mongoose");
 const Pokemon = require("./models/Pokemon");
 const router = require("./controllerV1");
-
+require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -20,7 +20,7 @@ app.use("/*", (req, res) =>
 app.listen(port, async () => {
   try {
     await mongoose.connect(
-      "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000",
+      process.env.MONGODB_CONNECTION_STRING,
       { useNewUrlParser: true }
     );
     mongoose.connection.db.dropDatabase();
