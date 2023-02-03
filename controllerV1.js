@@ -2,14 +2,17 @@ const express = require("express");
 const router = express.Router();
 const Pokemon = require("./models/Pokemon");
 
-router.get("/", (req, res) => res.sendStatus(200));
+const API_ENDPOINT =
+  "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master";
+
+router.get("/", (_, res) => res.sendStatus(200));
 
 router.get("/pokemons", async (req, res) => {
   const { count, after } = req.query;
   const limit = count ? parseInt(count) : 10;
   const skip = after ? parseInt(after) : 0;
   const pokemon = await Pokemon.find({})
-    .sort({ _id: 1 })
+    .sort({ id: 1 })
     .skip(skip)
     .limit(limit)
     .exec();
@@ -17,42 +20,33 @@ router.get("/pokemons", async (req, res) => {
 });
 
 router.post("/pokemon", async (req, res) => {
-  const { id, name, img, type, base } = req.body;
+  const { id, name, type, base } = req.body;
   try {
-    const newPokemon = await Pokemon.create({ _id: id, name, img, type, base });
-    res.json({msg: "Added Successfully", newPokemon});
+    const newPokemon = await Pokemon.create({ id, name, type, base });
+    res.json({ msg: "Added Successfully", newPokemon });
   } catch (err) {
     if (err.code === 11000) {
       res.status(400).json({ errMsg: "Pokemon already exists" });
+    } else if (err.name == "ValidationError") {
+      res.status(400).json({ errMsg: err.message });
     } else {
-      res.status(500).json(err);
+      res.status(500).json({ errMsg: err.message });
     }
   }
 });
 
-function parseId(id) {
-  try {
-    const intId = parseInt(id);
-    if (!intId || intId < 1 || intId > 811) {
-      throw new Error();
-    }
-    return intId;
-  } catch (err) {
-    throw new Error("Cast Error: pass pokemon id between 1 and 811");
-  }
-}
-
 router.get("/pokemon/:id", async (req, res) => {
-  let id;
-  try {
-    id = parseId(req.params.id);
-  } catch (err) {
-    res.status(400).json({ errMsg: err.message });
+  const id = parseInt(req.params.id);
+  if (!id) {
+    res
+      .status(400)
+      .json({ errMsg: "Cast Error: pass pokemon id between 1 and 811" });
     return;
   }
+
   try {
-    const pokemon = await Pokemon.findById(id).exec();
-    if (pokemon) {
+    const pokemon = await Pokemon.find({ id }).exec();
+    if (pokemon.length > 0) {
       res.json(pokemon);
     } else {
       res.status(404).json({ errMsg: "Pokemon not found" });
@@ -65,9 +59,9 @@ router.get("/pokemon/:id", async (req, res) => {
 router.get("/pokemonImage/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const pokemon = await Pokemon.findById(parseInt(id)).exec();
+    const pokemon = await Pokemon.findOne({ id }).exec();
     if (pokemon) {
-      res.json(pokemon.img);
+      res.json({ img: `${API_ENDPOINT}/images/${pokemon.id}.png` });
     } else {
       res.status(404).json({ errMsg: "Pokemon not found" });
     }
@@ -80,7 +74,7 @@ router.put("/pokemon/:id", async (req, res) => {
   const { id } = req.params;
   const { name, img, type, base } = req.body;
   try {
-    const pokemon = await Pokemon.findById(id);
+    const pokemon = await Pokemon.findOne({ id }).exec();
     if (pokemon) {
       pokemon.name = name;
       pokemon.img = img;
@@ -92,7 +86,7 @@ router.put("/pokemon/:id", async (req, res) => {
       res.status(404).json({ errMsg: "Pokemon not found" });
     }
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ errMsg: err.message });
   }
 });
 
@@ -100,20 +94,25 @@ router.patch("/pokemon/:id", async (req, res) => {
   const id = req.params.id;
   const updates = req.body;
   try {
-    const updatedUnicorn = await Unicorn.findByIdAndUpdate(id, updates, {
+    const updatedUnicorn = await Pokemon.findOneAndUpdate({ id }, updates, {
       new: true,
     }).exec();
-    res.status(200).json(updatedUnicorn);
+    if (!updatedUnicorn) {
+      res.status(404).json({ errMsg: "Pokemon not found" });
+    }
+    res
+      .status(200)
+      .json({ msg: "updated successfully", pokeInfo: updatedUnicorn });
   } catch (err) {
-    res.status(400).send({errMsg: err.message});
+    res.status(400).send({ errMsg: err.message });
   }
 });
 
 router.delete("/pokemon/:id", async (req, res) => {
   const { id } = req.params;
-  const pokemon = await Pokemon.findByIdAndDelete(id).exec();
+  const pokemon = await Pokemon.findOneAndDelete({ id }).exec();
   if (pokemon) {
-    res.json(pokemon);
+    res.json({ msg: "Deleted Successfully", pokeInfo: pokemon });
   } else {
     res.status(404).json({ errMsg: "Pokemon not found" });
   }

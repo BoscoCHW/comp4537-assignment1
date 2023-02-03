@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/comp4537-w23/assignment-1---the-pokemon-s-api-server-BoscoCHW#readme",
   "dependencies": {
+    "axios": "^1.3.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
