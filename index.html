@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex API</title>
+</head>
+<body>
+  <script type="module" src="https://md-block.verou.me/md-block.js"></script>
+  <md-block>
 # Pokemon API
 
 ## Endpoints
@@ -12,7 +23,6 @@
 - Description: Returns a list of pokemons
 
 - Query parameters:
-
   - `count` (optional): Number of pokemons to return, default value is `10`
   - `after` (optional): Number of pokemons to skip, default value is `0`
 
@@ -21,7 +31,6 @@
   - `500 Internal Server Error`: In case of any server error
 
 ### `POST /pokemon`
-
 - Description: Adds a new pokemon
 - Request body:
   - `id` (required): ID of the pokemon
@@ -36,7 +45,6 @@
   - `500 Internal Server Error`: In case of any server error
 
 ### `GET /pokemon/:id`
-
 - Description: Returns a pokemon by ID
 - Path parameters:
   - `id`: ID of the pokemon
@@ -47,7 +55,6 @@
   - `500 Internal Server Error`: In case of any server error
 
 ### `GET /pokemonImage/:id`
-
 - Description: Returns an image of the pokemon
 - Path parameters:
   - `id`: ID of the pokemon
@@ -57,7 +64,6 @@
   - `500 Internal Server Error`: In case of any server error
 
 ### `PUT /pokemon/:id`
-
 - Description: Updates an existing pokemon
 - Path parameters:
   - `id`: ID of the pokemon
@@ -72,7 +78,6 @@
   - `500 Internal Server Error`: In case of any server error
 
 ### `PATCH /pokemon/:id`
-
 - Description: Updates some fields of an existing pokemon
 - Path parameters:
   - `id`: ID of the pokemon
@@ -83,8 +88,8 @@
   - `400 Bad Request`: If the request body is invalid
   - `500 Internal Server Error`: In case of any server error
 
-### `DELETE /pokemon/:id`
 
+### `DELETE /pokemon/:id`
 - Description: Deletes an existing pokemon
 - Path parameters:
   - `id`: ID of the pokemon
@@ -92,3 +97,6 @@
   - `200 OK`: JSON with msg key and the deleted pokemon information
   - `404 Not Found`: If the pokemon is not found
   - `500 Internal Server Error`: In case of any server error
+  </md-block>
+</body>
+</html>

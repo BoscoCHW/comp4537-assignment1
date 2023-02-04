@@ -11,6 +11,8 @@ const API_ENDPOINT =
   "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master";
 
 app.use(express.json());
+
+app.get("/api/doc", (_, res) => res.sendFile(__dirname + "/index.html"));
 app.use("/api/v1", router);
 
 app.use("/*", (req, res) =>
@@ -19,10 +21,9 @@ app.use("/*", (req, res) =>
 
 app.listen(port, async () => {
   try {
-    await mongoose.connect(
-      process.env.MONGODB_CONNECTION_STRING,
-      { useNewUrlParser: true }
-    );
+    await mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
+      useNewUrlParser: true,
+    });
     mongoose.connection.db.dropDatabase();
     const { data: pokemons } = await axios.get(`${API_ENDPOINT}/pokedex.json`);
     pokemons.forEach(async (pokemon) => {

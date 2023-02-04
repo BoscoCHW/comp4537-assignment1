@@ -105,17 +105,21 @@ router.patch("/pokemon/:id", async (req, res) => {
         .json({ msg: "Updated Successfully", pokeInfo: updatedUnicorn });
     }
   } catch (err) {
-    res.status(400).send({ errMsg: err.message });
+    res.status(500).send({ errMsg: err.message });
   }
 });
 
 router.delete("/pokemon/:id", async (req, res) => {
   const { id } = req.params;
-  const pokemon = await Pokemon.findOneAndDelete({ id }).exec();
-  if (pokemon) {
-    res.json({ msg: "Deleted Successfully", pokeInfo: pokemon });
-  } else {
-    res.status(404).json({ errMsg: "Pokemon not found" });
+  try {
+    const pokemon = await Pokemon.findOneAndDelete({ id }).exec();
+    if (pokemon) {
+      res.json({ msg: "Deleted Successfully", pokeInfo: pokemon });
+    } else {
+      res.status(404).json({ errMsg: "Pokemon not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ errMsg: err.message });
   }
 });
 
