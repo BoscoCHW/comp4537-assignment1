@@ -22,6 +22,11 @@ router.get("/pokemons", async (req, res) => {
 router.post("/pokemon", async (req, res) => {
   const { id, name, type, base } = req.body;
   try {
+    const x = await Pokemon.find({ id }).exec();
+    if (x.length > 0) {
+      res.status(400).json({ errMsg: "Pokemon already exists" });
+      return;
+    }
     const newPokemon = await Pokemon.create({ id, name, type, base });
     res.json({ msg: "Added Successfully", newPokemon });
   } catch (err) {
