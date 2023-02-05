@@ -77,19 +77,11 @@ router.get("/pokemonImage/:id", async (req, res) => {
 
 router.put("/pokemon/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, img, type, base } = req.body;
+
   try {
-    const pokemon = await Pokemon.findOne({ id }).exec();
-    if (pokemon) {
-      pokemon.name = name;
-      pokemon.img = img;
-      pokemon.type = type;
-      pokemon.base = base;
-      const updatedPokemon = await pokemon.save();
-      res.json({ msg: "Updated Successfully", pokeInfo: updatedPokemon });
-    } else {
-      res.status(404).json({ errMsg: "Pokemon not found" });
-    }
+    const pokemon = await Pokemon.findOneAndUpdate({ id }, req.body, {upsert: true, new: true}).exec();
+    res.json({ msg: "Updated Successfully", pokeInfo: pokemon });
+
   } catch (err) {
     res.status(500).json({ errMsg: err.message });
   }
