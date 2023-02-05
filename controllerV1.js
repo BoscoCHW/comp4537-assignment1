@@ -9,7 +9,7 @@ router.get("/", (_, res) => res.sendStatus(200));
 
 router.get("/pokemons", async (req, res) => {
   const { count, after } = req.query;
-  const limit = count ?? (parseInt(count) ? parseInt(count) : 10);
+  const limit = parseInt(count) ? parseInt(count) : 10;
   const skip = after ? parseInt(after) : 0;
   const pokemon = await Pokemon.find({})
     .sort({ id: 1 })
